@@ -51,6 +51,31 @@
     (write-sequence wav (uiop:process-info-input aplay))
     "sent to aplay"))
 
+
+(defparameter *favourites*
+  `(("cocolino" "xcowsay cocolino")
+    ("loefflet" "xcowsay loeffler")
+    ("calle trese" "xcowsay calle 13")))
+
+(defvar *possition*)
+
+(defun init ()
+  (setf *possition* nil))
+
+(defun inc-pos ()
+  (if (null *possition*)
+    (setf *possition* 0)
+    (when (>= (incf *possition*) (length *favourites*))
+      (setf *possition* 0)))
+  *possition*)
+
+(defun dec-pos ()
+  (if (null *possition*)
+    (setf *possition* (1- (length *favourites*)))
+    (when (minusp (decf *possition*))
+      (setf *possition* (1- (length *favourites*)))))
+  *possition*)
+
 (defun up ()
   (say-it-runtime "upper"))
 

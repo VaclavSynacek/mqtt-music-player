@@ -11,9 +11,7 @@
          line)))
     (uiop:launch-program run-it)))
     
-
-(say-it-runtime "hello")
-
+;(say-it-runtime "hello")
 
 (defun slurp (infile)
   (with-open-file (instream infile
@@ -51,11 +49,12 @@
     (write-sequence wav (uiop:process-info-input aplay))
     "sent to aplay"))
 
+;(say-this (to-spech-wav "testing test"))
 
 (defparameter *favourites*
-  `(("cocolino" "xcowsay cocolino")
-    ("loefflet" "xcowsay loeffler")
-    ("calle trese" "xcowsay calle 13")))
+  `((,(to-spech-wav "cocolino") "xcowsay cocolino")
+    (,(to-spech-wav "loeffler") "xcowsay loeffler")
+    (,(to-spech-wav "calle trese") "xcowsay calle 13")))
 
 (defvar *possition*)
 
@@ -76,10 +75,11 @@
       (setf *possition* (1- (length *favourites*)))))
   *possition*)
 
+(defun current-song ()
+  (nth *possition* *favourites*))
+
 (defun say-which ()
-  (let
-    ((which (nth *possition* *favourites*)))
-    (uiop:launch-program (second which))))
+    (say-this (car (current-song))))
 
 (defun up ()
   (inc-pos)
@@ -92,12 +92,14 @@
 (let
   ((sound (to-spech-wav "now playing selected peesnichcu")))
   (defun enter ()
-    (say-this sound)))
+    (say-this sound)
+    (uiop:launch-program (second (current-song)))))
 
 (let
   ((sound (to-spech-wav "yakoou peesnichcu?")))
   (defun start ()
-    (say-this sound)))
+    (say-this sound)
+    (init)))
 
 (defun process-command (line)
   (let
@@ -108,8 +110,11 @@
       (otherwise
         (format t "UNKNOWN command \"~a\"~%" cmd)))))
 
-(loop
-  (let
-    ((line (read-line (uiop:process-info-output *shell*))))
-    (process-command line)
-    (finish-output)))
+(defun start-listening ()
+  (loop
+    (let
+      ((line (read-line (uiop:process-info-output *shell*))))
+      (process-command line)
+      (finish-output))))
+
+(start-listening)

@@ -59,8 +59,11 @@
 
 (defvar *possition*)
 
+(defvar *playing-p*)
+
 (defun init ()
-  (setf *possition* nil))
+  (setf *possition* nil)
+  (setf *playing-p* nil))
 
 (defun inc-pos ()
   (if (null *possition*)
@@ -93,8 +96,10 @@
 (let
   ((sound (to-spech-wav "now playing selected peesnichcu")))
   (defun enter ()
-    (say-this sound)
-    (uiop:launch-program (second (current-song)))))
+    (when (null *playing-p*)
+      (say-this sound)
+      (setf *playing-p* t)
+      (uiop:launch-program (second (current-song))))))
 
 (let
   ((sound (to-spech-wav "yakoou peesnichcu?")))

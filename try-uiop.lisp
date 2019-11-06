@@ -86,12 +86,14 @@
     (say-this (car (current-song))))
 
 (defun up ()
-  (inc-pos)
-  (say-which))
+  (when (null *playing-p*)
+    (inc-pos)
+    (say-which)))
 
 (defun down ()
-  (dec-pos)
-  (say-which))
+  (when (null *playing-p*)
+    (dec-pos)
+    (say-which)))
 
 (let
   ((sound (to-spech-wav "now playing selected peesnichcu")))

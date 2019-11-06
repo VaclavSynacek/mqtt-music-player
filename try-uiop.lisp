@@ -9,7 +9,6 @@
          nil
          "pico2wave -w lookdave.wav \"~a\" && aplay lookdave.wav"
          line)))
-    (print run-it)
     (uiop:launch-program run-it)))
     
 
@@ -52,18 +51,26 @@
     (write-sequence wav (uiop:process-info-input aplay))
     "sent to aplay"))
 
+(defun up ()
+  (say-it-runtime "upper"))
+
+(defun down ()
+  (say-it-runtime "lower"))
+
+(defun enter ()
+  (say-it-runtime "now playing selected peesnichcu"))
+
+(defun reset ()
+  (say-it-runtime "yakoou peesnichcu?"))
 
 (defun process-command (line)
   (let
     ((cmd (read-from-string line)))
     (case cmd
-      ((UP DOWN) (say-it-runtime line))
-      ((ENTER) (say-it-runtime "thank you for cooperation")
-               (exit))
-      ((OUT) (format t "you are out of range")) 
+      ((UP DOWN ENTER RESET) (funcall cmd))
+      ((OUT) (format t "you are out of range~%")) 
       (otherwise
-        (format t "UNKNOWN command")
-        (print cmd)))))
+        (format t "UNKNOWN command \"~a\"~%" cmd)))))
 
 (loop
   (let

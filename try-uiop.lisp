@@ -47,13 +47,14 @@
   (let
     ((aplay (uiop:launch-program "aplay" :input :stream)))
     (write-sequence wav (uiop:process-info-input aplay))
+    (close (uiop:process-info-input aplay))
     "sent to aplay"))
 
 ;(say-this (to-spech-wav "testing test"))
 
 (defparameter *favourites*
   `((,(to-spech-wav "cocolino") "mpv /home/pi/music/coccolino/*.mp3")
-    (,(to-spech-wav "loeffler") "mpv \"/home/pi/music/Calle 13 - Multi Viral - MP3\/*.mp3\"")
+    (,(to-spech-wav "loeffler") "mpv /home/pi/music/the-best-of-christian-loeffler")
     (,(to-spech-wav "kasee o") "mpv /home/pi/music/kase.o/*.mp3")))
 
 (defvar *possition*)
@@ -98,6 +99,9 @@
 (let
   ((sound (to-spech-wav "yakoou peesnichcu?")))
   (defun start ()
+    (handler-case
+      (uiop:run-program "killall mpv")
+      (t () nil))
     (say-this sound)
     (init)))
 
@@ -118,5 +122,7 @@
       ((line (read-line (uiop:process-info-output *shell*))))
       (process-command line)
       (finish-output))))
+
+(init)
 
 (start-listening)

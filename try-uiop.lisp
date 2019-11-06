@@ -57,17 +57,21 @@
 (defun down ()
   (say-it-runtime "lower"))
 
-(defun enter ()
-  (say-it-runtime "now playing selected peesnichcu"))
+(let
+  ((sound (to-spech-wav "now playing selected peesnichcu")))
+  (defun enter ()
+    (say-this sound)))
 
-(defun reset ()
-  (say-it-runtime "yakoou peesnichcu?"))
+(let
+  ((sound (to-spech-wav "yakoou peesnichcu?")))
+  (defun start ()
+    (say-this sound)))
 
 (defun process-command (line)
   (let
     ((cmd (read-from-string line)))
     (case cmd
-      ((UP DOWN ENTER RESET) (funcall cmd))
+      ((UP DOWN ENTER START) (funcall cmd))
       ((OUT) (format t "you are out of range~%")) 
       (otherwise
         (format t "UNKNOWN command \"~a\"~%" cmd)))))

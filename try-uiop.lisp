@@ -76,11 +76,18 @@
       (setf *possition* (1- (length *favourites*)))))
   *possition*)
 
+(defun say-which ()
+  (let
+    ((which (nth *possition* *favourites*)))
+    (uiop:launch-program (second which))))
+
 (defun up ()
-  (say-it-runtime "upper"))
+  (inc-pos)
+  (say-which))
 
 (defun down ()
-  (say-it-runtime "lower"))
+  (dec-pos)
+  (say-which))
 
 (let
   ((sound (to-spech-wav "now playing selected peesnichcu")))

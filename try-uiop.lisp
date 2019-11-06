@@ -42,15 +42,18 @@
       line))
   (slurp "/tmp/mqtt-temp.wav"))                            
 
+(let
+  ((prev-stream nil))
+  (defun say-this (wav)
+    (when prev-stream
+      (close prev-stream))
+    (let
+      ((aplay (uiop:launch-program "aplay" :input :stream)))
+      (setf prev-stream (uiop:process-info-input aplay))
+      (write-sequence wav prev-stream)
+      "sent to aplay")))
 
-(defun say-this (wav)
-  (let
-    ((aplay (uiop:launch-program "aplay" :input :stream)))
-    (write-sequence wav (uiop:process-info-input aplay))
-    (close (uiop:process-info-input aplay))
-    "sent to aplay"))
-
-;(say-this (to-spech-wav "testing test"))
+;(say-this (to-spech-wav "testing the speech configuration. you should hear sound."))
 
 (defparameter *favourites*
   `((,(to-spech-wav "cocolino") "mpv /home/pi/music/coccolino/*.mp3")
@@ -124,12 +127,12 @@
         (format t "UNKNOWN command \"~a\"~%" cmd)))))
 
 (defun start-listening ()
+  (init)
   (loop
     (let
       ((line (read-line (uiop:process-info-output *shell*))))
       (process-command line)
       (finish-output))))
 
-(init)
 
 (start-listening)

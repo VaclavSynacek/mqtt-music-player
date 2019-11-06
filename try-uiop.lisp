@@ -52,9 +52,9 @@
 ;(say-this (to-spech-wav "testing test"))
 
 (defparameter *favourites*
-  `((,(to-spech-wav "cocolino") "xcowsay cocolino")
-    (,(to-spech-wav "loeffler") "xcowsay loeffler")
-    (,(to-spech-wav "calle trese") "xcowsay calle 13")))
+  `((,(to-spech-wav "cocolino") "mpv /home/pi/music/coccolino/*.mp3")
+    (,(to-spech-wav "loeffler") "mpv \"/home/pi/music/Calle 13 - Multi Viral - MP3\/*.mp3\"")
+    (,(to-spech-wav "kasee o") "mpv /home/pi/music/kase.o/*.mp3")))
 
 (defvar *possition*)
 
@@ -101,12 +101,14 @@
     (say-this sound)
     (init)))
 
+
 (defun process-command (line)
   (let
     ((cmd (read-from-string line)))
     (case cmd
       ((UP DOWN ENTER START) (funcall cmd))
       ((OUT) (format t "you are out of range~%")) 
+      ((GOODBYE) (format t "Goodbye~%"))
       (otherwise
         (format t "UNKNOWN command \"~a\"~%" cmd)))))
 

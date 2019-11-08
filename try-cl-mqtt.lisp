@@ -8,16 +8,16 @@
 (in-package :mqtt-player)
 
 
-(defun test-it (host)
+(defun test-it (host port)
   (bb:alet ((conn (mqtt:connect
                    host
+                   :port port
                    :client-id "mqtt-player"
                    :on-message #'(lambda (message)
                                    (format t "~%RECEIVED: ~s~%"
                                            (babel:octets-to-string
                                             (mqtt:mqtt-message-payload message)
                                             :encoding :utf-8))))))
-    (format t "connect done")
     (bb:walk
       (mqtt:subscribe conn "/a/#")
       (mqtt:subscribe conn "/b/#")
@@ -30,4 +30,10 @@
   (values))
 
 (as:with-event-loop ()
-  (test-it "192.168.69.41"))
+  (test-it "localhost" 1883))
+
+
+(as:with-event-loop
+  (:catch-app-errors t)
+  (test-it "localhost" 1883))
+

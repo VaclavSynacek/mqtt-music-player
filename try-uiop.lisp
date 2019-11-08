@@ -114,7 +114,8 @@
       (uiop:run-program "killall mpv")
       (t () nil))
     (say-this sound)
-    (init)))
+    (init)
+    (up)))
 
 
 (defun process-command (line)

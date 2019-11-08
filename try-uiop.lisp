@@ -58,6 +58,7 @@
 (defparameter *favourites*
   `((,(to-spech-wav "cocolino") "mpv /home/pi/music/coccolino/*.mp3")
     (,(to-spech-wav "loeffler") "mpv /home/pi/music/the-best-of-christian-loeffler")
+    (,(to-spech-wav "saint germain") "mpv /home/pi/terinka/Music/St\\ Germain/St.Germain\\ -\\ Boulevard/*.mp3")
     (,(to-spech-wav "kasee o") "mpv /home/pi/music/kase.o/*.mp3")))
 
 (defvar *possition*)

@@ -34,7 +34,7 @@
     (write-sequence content outstream)))
 
 
-(defun to-spech-wav (line)
+(defun to-speech-wav (line)
   (uiop:run-program
     (format
       nil
@@ -53,13 +53,13 @@
       (write-sequence wav prev-stream)
       "sent to aplay")))
 
-;(say-this (to-spech-wav "testing the speech configuration. you should hear sound."))
+;(say-this (to-speech-wav "testing the speech configuration. you should hear sound."))
 
 (defparameter *favourites*
-  `((,(to-spech-wav "cocolino") "mpv /home/pi/music/coccolino/*.mp3")
-    (,(to-spech-wav "loeffler") "mpv /home/pi/music/the-best-of-christian-loeffler")
-    (,(to-spech-wav "saint germain") "mpv /home/pi/terinka/Music/St\\ Germain/St.Germain\\ -\\ Boulevard/*.mp3")
-    (,(to-spech-wav "kasee o") "mpv /home/pi/music/kase.o/*.mp3")))
+  `((,(to-speech-wav "cocolino") "mpv /home/pi/music/coccolino/*.mp3")
+    (,(to-speech-wav "loeffler") "mpv /home/pi/music/the-best-of-christian-loeffler")
+    (,(to-speech-wav "saint germain") "mpv /home/pi/terinka/Music/St\\ Germain/St.Germain\\ -\\ Boulevard/*.mp3")
+    (,(to-speech-wav "kasee o") "mpv /home/pi/music/kase.o/*.mp3")))
 
 (defvar *possition*)
 
@@ -100,7 +100,7 @@
     (say-which)))
 
 (let
-  ((sound (to-spech-wav "now playing selected peesnichcu")))
+  ((sound (to-speech-wav "now playing selected peesnichcu")))
   (defun enter ()
     (when (null *playing-p*)
       (say-this sound)
@@ -108,7 +108,7 @@
       (uiop:launch-program (second (current-song))))))
 
 (let
-  ((sound (to-spech-wav "yakoou peesnichcu?")))
+  ((sound (to-speech-wav "yakoou peesnichcu?")))
   (defun start ()
     (handler-case
       (uiop:run-program "killall mpv")

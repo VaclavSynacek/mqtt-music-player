@@ -7,6 +7,19 @@
 
 (in-package mqtt-music-player/tts)
 
+
+(handler-case
+  (progn
+    (uiop:run-program "pico2wave --usage"
+                        :force-shell nil)
+    (format t "pico2wave appears installed"))
+  (t (original-condition)
+     (format *error-output* "*********************************************************~%")
+     (format *error-output* "You need to have pico2wave isntalled for tts.lisp to work~%")
+     (format *error-output* "*********************************************************~%")
+     (error original-condition)))
+
+
 (defun say-it-runtime (line)
   (let
     ((run-it

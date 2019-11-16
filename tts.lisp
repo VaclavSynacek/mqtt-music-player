@@ -3,7 +3,8 @@
   (:export
     say-it-runtime
     to-speech-wav
-    say-this))
+    say-this
+    speaker))
 
 (in-package mqtt-music-player/tts)
 
@@ -30,8 +31,12 @@
          "pico2wave -w ~a \"~a\" && aplay ~a && rm ~a"
          *tmp-file* line *tmp-file* *tmp-file*)))
     (uiop:launch-program run-it)))
-    
-;(say-it-runtime "hello")
+
+#|
+
+(say-it-runtime "hello")
+
+|#
 
 (defun to-speech-wav (line)
   (prog2
@@ -49,4 +54,23 @@
                     :input (lambda (strm)
                              (write-sequence wav strm))))
 
-;(say-this (to-speech-wav "testing the speech configuration. you should hear sound."))
+#|
+
+(say-this (to-speech-wav "testing the speech configuration. you should hear sound."))
+
+|#
+
+(defmacro speaker (line)
+  (let
+    ((sound (gensym)))
+    `(let
+       ((,sound ,(to-speech-wav line)))
+       (lambda ()
+         (say-this ,sound)))))
+
+#|
+
+(dotimes (i 3)
+  (funcall (speaker "42")))
+
+|#

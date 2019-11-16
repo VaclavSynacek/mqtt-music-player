@@ -20,13 +20,15 @@
      (error original-condition)))
 
 
+(defvar *tmp-file* "/tmp/tts.lisp.wav")
+
 (defun say-it-runtime (line)
   (let
     ((run-it
        (format
          nil
-         "pico2wave -w lookdave.wav \"~a\" && aplay lookdave.wav"
-         line)))
+         "pico2wave -w ~a \"~a\" && aplay ~a && rm ~a"
+         *tmp-file* line *tmp-file* *tmp-file*)))
     (uiop:launch-program run-it)))
     
 ;(say-it-runtime "hello")
@@ -53,12 +55,14 @@
 
 
 (defun to-speech-wav (line)
-  (uiop:run-program
-    (format
-      nil
-      "pico2wave -w /tmp/mqtt-temp.wav \"~a\""
-      line))
-  (slurp "/tmp/mqtt-temp.wav"))                            
+  (prog2
+    (uiop:run-program
+      (format
+        nil
+        "pico2wave -w ~a \"~a\""
+        *tmp-file* line))
+    (slurp *tmp-file*)                            
+    (uiop:run-program (format nil "rm ~a" *tmp-file*))))
 
 (let
   ((prev-stream nil))

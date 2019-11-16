@@ -64,15 +64,10 @@
     (slurp *tmp-file*)                            
     (uiop:run-program (format nil "rm ~a" *tmp-file*))))
 
-(let
-  ((prev-stream nil))
-  (defun say-this (wav)
-    (when prev-stream
-      (close prev-stream))
-    (let
-      ((aplay (uiop:launch-program "aplay" :input :stream)))
-      (setf prev-stream (uiop:process-info-input aplay))
-      (write-sequence wav prev-stream)
-      "sent to aplay")))
+
+(defun say-this (wav)
+  (uiop:run-program "aplay"
+                    :input (lambda (strm)
+                             (write-sequence wav strm))))
 
 ;(say-this (to-speech-wav "testing the speech configuration. you should hear sound."))

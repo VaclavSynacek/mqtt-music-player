@@ -33,27 +33,6 @@
     
 ;(say-it-runtime "hello")
 
-(defun slurp (infile)
-  (with-open-file (instream infile
-                   :direction :input
-                   :element-type '(unsigned-byte 8)
-                   :if-does-not-exist nil)
-    (when instream
-      (let*
-        ((size (file-length instream))
-         (result (make-array size :element-type '(unsigned-byte 8))))
-        (read-sequence result instream :end size)
-        result))))
-
-
-(defun spit (outfile content)
-  (with-open-file (outstream outfile
-                    :direction :output
-                    :element-type '(unsigned-byte 8)
-                    :if-does-not-exist :create)
-    (write-sequence content outstream)))
-
-
 (defun to-speech-wav (line)
   (prog2
     (uiop:run-program
@@ -61,7 +40,7 @@
         nil
         "pico2wave -w ~a \"~a\""
         *tmp-file* line))
-    (slurp *tmp-file*)                            
+    (alexandria:read-file-into-byte-vector *tmp-file*)                            
     (uiop:run-program (format nil "rm ~a" *tmp-file*))))
 
 

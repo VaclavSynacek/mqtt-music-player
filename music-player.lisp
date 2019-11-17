@@ -49,9 +49,18 @@
     (say-which)))
 
 (defun enter ()
-  (when (null *playing-p*)
-    (setf *playing-p* t)
-    (funcall (second (current-song)))))
+  (let
+    ((cur (second (current-song))))
+    (typecase cur
+      (list
+        (progn
+          (setf *menu* cur)
+          (init)
+          (up)))
+      (function
+        (when (null *playing-p*)
+          (setf *playing-p* t)
+          (funcall cur))))))
 
 (defun start ()
   (funcall *on-start*)

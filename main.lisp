@@ -25,7 +25,13 @@
   `((,(speaker "cocolino") ,(play "/home/pi/music/coccolino/*.mp3"))
     (,(speaker "loeffler") ,(play "/home/pi/music/the-best-of-christian-loeffler"))
     (,(speaker "saint germain") ,(play "/home/pi/terinka/Music/St\\ Germain/St.Germain\\ -\\ Boulevard/*.mp3"))
-    (,(speaker "kasee o") ,(play "/home/pi/music/kase.o/*.mp3"))))
+    (,(speaker "kasee o") ,(play "/home/pi/music/kase.o/*.mp3"))
+    (,(speaker "pink floyd")
+      ((,(speaker "The Division Bel") ,(play "/home/pi/terinka/Music/Pink\\ Floyd/1994\\ -\\ The\\ Division\\ Bell"))
+       (,(speaker "The Wall") ,(play "/home/pi/terinka/Music/Pink\\ Floyd/1979\\ -\\ The\\ Wall"))))))
+               
+                              
+*favourites*
 
 (start-listening "command")
 

@@ -1,7 +1,6 @@
 (defpackage mqtt-music-player/music-player
   (:use
-    :cl
-    :mqtt-music-player/tts)
+    :cl)
   (:export
     get-process-command-function))
 
@@ -12,6 +11,8 @@
 (defvar *possition* nil)
 
 (defvar *playing-p* nil)
+
+(defvar *on-start* (lambda ()))
 
 (defun init ()
   (setf *possition* nil)
@@ -47,27 +48,20 @@
     (dec-pos)
     (say-which)))
 
-(let
-  ((sound (to-speech-wav "now playing selected peesnichcu")))
-  (defun enter ()
-    (when (null *playing-p*)
-      (say-this sound)
-      (setf *playing-p* t)
-      (funcall (second (current-song))))))
+(defun enter ()
+  (when (null *playing-p*)
+    (setf *playing-p* t)
+    (funcall (second (current-song)))))
 
-(let
-  ((sound (to-speech-wav "yakoou peesnichcu?")))
-  (defun start ()
-    (handler-case
-      (uiop:run-program "killall mpv")
-      (t () nil))
-    (say-this sound)
-    (init)
-    (up)))
+(defun start ()
+  (funcall *on-start*)
+  (init)
+  (up))
 
-
-(defun get-process-command-function (menu)
+(defun get-process-command-function (menu &key on-start)
   (setf *menu* menu)
+  (when on-start
+    (setf *on-start* on-start))
   (lambda (line)
     (alexandria:switch (line :test #'equal)
       ("up" (up))

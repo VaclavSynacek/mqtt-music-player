@@ -4,7 +4,8 @@
     say-it-runtime
     to-speech-wav
     say-this
-    speaker))
+    speaker
+    say))
 
 (in-package mqtt-music-player/tts)
 
@@ -59,6 +60,20 @@
 (say-this (to-speech-wav "testing the speech configuration. you should hear sound."))
 
 |#
+
+(defmacro say (line)
+  (let
+     ((sound (gensym)))
+     `(let
+        ((,sound ,(to-speech-wav line)))
+        (say-this ,sound)))) 
+
+#|
+ 
+(say "I am your father!")
+
+|#
+
 
 (defmacro speaker (line)
   (let

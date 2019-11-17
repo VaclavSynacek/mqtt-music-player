@@ -1,7 +1,3 @@
-(format t "baf from main")
-
-
-
 (defpackage mqtt-music-player/main
   (:use
     :cl
@@ -11,9 +7,19 @@
 
 (in-package mqtt-music-player/main)
 
+(defvar *on-enter* (speaker "now playing selected peesnichcu"))
+
 (defmacro play (song)
   `(lambda ()
+     (funcall *on-enter*)
      (uiop:run-program ,(format nil "mpv ~a" song))))
+
+(defun on-start ()
+  (handler-case
+    (uiop:run-program "killall mpv")
+    (t () nil))
+  (say "yakoou peesnichcu?"))
+
 
 (defparameter *favourites*
   `((,(speaker "cocolino") ,(play "/home/pi/music/coccolino/*.mp3"))
@@ -23,4 +29,5 @@
 
 (start-listening "command")
 
-(start-processing (get-process-command-function *favourites*))
+(start-processing (get-process-command-function *favourites*
+                                                :on-start #'on-start))

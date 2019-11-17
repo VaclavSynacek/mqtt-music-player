@@ -11,15 +11,15 @@
 
 (in-package mqtt-music-player/main)
 
-
-
+(defmacro play (song)
+  `(lambda ()
+     (uiop:run-program ,(format nil "mpv ~a" song))))
 
 (defparameter *favourites*
-  `((,(to-speech-wav "cocolino") "mpv /home/pi/music/coccolino/*.mp3")
-    (,(to-speech-wav "loeffler") "mpv /home/pi/music/the-best-of-christian-loeffler")
-    (,(to-speech-wav "saint germain") "mpv /home/pi/terinka/Music/St\\ Germain/St.Germain\\ -\\ Boulevard/*.mp3")
-    (,(to-speech-wav "kasee o") "mpv /home/pi/music/kase.o/*.mp3")))
-
+  `((,(speaker "cocolino") ,(play "/home/pi/music/coccolino/*.mp3"))
+    (,(speaker "loeffler") ,(play "/home/pi/music/the-best-of-christian-loeffler"))
+    (,(speaker "saint germain") ,(play "/home/pi/terinka/Music/St\\ Germain/St.Germain\\ -\\ Boulevard/*.mp3"))
+    (,(speaker "kasee o") ,(play "/home/pi/music/kase.o/*.mp3"))))
 
 (start-listening "command")
 

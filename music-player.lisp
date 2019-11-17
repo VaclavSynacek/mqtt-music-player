@@ -35,7 +35,7 @@
   (nth *possition* *menu*))
 
 (defun say-which ()
-    (say-this (car (current-song))))
+    (funcall (car (current-song))))
 
 (defun up ()
   (when (null *playing-p*)
@@ -53,7 +53,7 @@
     (when (null *playing-p*)
       (say-this sound)
       (setf *playing-p* t)
-      (uiop:launch-program (second (current-song))))))
+      (funcall (second (current-song))))))
 
 (let
   ((sound (to-speech-wav "yakoou peesnichcu?")))
